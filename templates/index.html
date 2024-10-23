@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Iris Flower Predictor</title>
+</head>
+
+<body>
+    <h1>Iris Flower Prediction</h1>
+    <form id="iris-form">
+        <label for="sepal_length">Sepal Length:</label>
+        <input type="number" step="any" name="sepal_length" required><br>
+
+        <label for="sepal_width">Sepal Width:</label>
+        <input type="number" step="any" name="sepal_width" required><br>
+
+        <label for="petal_length">Petal Length:</label>
+        <input type="number" step="any" name="petal_length" required><br>
+
+        <label for="petal_width">Petal Width:</label>
+        <input type="number" step="any" name="petal_width" required><br>
+
+        <button type="submit">Predict</button>
+    </form>
+    <h2 id="prediction-result"></h2>
+    <script>
+        document.getElementById('iris-form').onsubmit = async function (e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: new URLSearchParams(data),
+            });
+            const result = await response.json();
+            document.getElementById('prediction-result').innerText = `Prediction: ${result.prediction}`;
+        }
+    </script>
+</body>
+
+</html>
